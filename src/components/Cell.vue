@@ -16,7 +16,7 @@ export default {
             if(player === 'player' && e.target.innerHTML === "" ){
                 e.target.innerHTML = "X"
 
-                this.$emit('checkEndGame')
+                this.$emit('checkEndGame', 'player')
             } 
         }
     }

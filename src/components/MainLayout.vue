@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <cell v-for="n in 9" :key="n" @checkEndGame="checkEndGame">
+      <cell v-for="n in 9" :key="n" @checkEndGame="checkEndGame($event)">
 
       </cell>
   </div>
@@ -24,14 +24,16 @@ export default {
                 [3,6,9],
                 [1,5,9],
                 [3,5,7]
-            ]
+            ],
+            moves:[]
         }
     },
     methods:{
         clearField(){
             this.$children.forEach(cell => cell.$el.innerHTML = '')
         },
-        checkEndGame(){
+        checkEndGame(role){
+            this.moves.push(role)
             let player = [],
                 ai = [],
                 isGameEnd = false,
@@ -63,8 +65,10 @@ export default {
             }
 
             if(isGameEnd || this.$children.filter(cell => cell.$el.innerHTML === '').length === 0){
+                console.log(`Game over, ${this.moves[this.moves.length - 1]} wins`)
+                this.moves = []
                 this.clearField()
-            } else {
+            } else if(this.moves[this.moves.length - 1] === 'player'){
                 this.aiMove()
             }
         },
@@ -78,7 +82,7 @@ export default {
                 this.aiMove()
             }
 
-            // this.checkEndGame()
+            this.checkEndGame('ai')
         }
     }
 }
